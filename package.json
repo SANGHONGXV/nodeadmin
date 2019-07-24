@@ -5,8 +5,9 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
+    "server": "nodemon server.js",
     "docapi": "apidoc -i routes/ -o public/apidoc/",
-    "dev": "npm run docapi && npm run start"
+    "dev": "npm run docapi && npm run server"
   },
   "author": "sanghongxv",
   "license": "ISC",
