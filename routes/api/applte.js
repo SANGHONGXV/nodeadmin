@@ -290,7 +290,7 @@ router.post("/edit",  (req, res) => {
 
 //  passport.authenticate("jwt", { session: false }),
 router.delete("/del", (req, res) => {
-    applte.findOneAndRemove({ _id: req.body.id }).then(data => {
+    applte.findOneAndRemove({ _id: req.query.id }).then(data => {
         data.save().then(data => res.json({
             status:200,
             code:0,
