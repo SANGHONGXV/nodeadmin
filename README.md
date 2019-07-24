@@ -15,13 +15,16 @@
 
 或者
 
-生产环境执行
+只生产环境执行
 > npm run start
 
-1.5 生成api接口文档
+1.5 只生成api接口文档
 >  npm run apidoc
 
-1.6 打开api接口文档 
+1.6 综合执行
+> npm run dev
+
+1.7 打开api接口文档 
 > 浏览器访问 http://127.0.0.1:5000/apidoc
 
 
