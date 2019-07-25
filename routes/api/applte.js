@@ -4,14 +4,7 @@ const passport = require("passport");
 const fs = require("fs");
 const multer = require('multer');
 const applte = require('../../models/applte');
-
-/**
- * @api {post} /api/applte/test 测试
- * @apiGroup Applte
- * @apiSuccess {json} result
- * @apiVersion 1.0.0
- */
-
+// 测试
 router.get("/test", (req, res) => {
     res.json({ msg: "data works" })
 })
@@ -21,6 +14,7 @@ const storage = multer.diskStorage({
         cb(null, 'upload/applte')
     },
     filename: function (req, file, cb) {
+        console.log(file);
         var fileformat = (file.originalname).split('.');
         cb(null, file.fieldname+'-'+Date.now()+'.'+fileformat[fileformat.length-1]);
     }
@@ -85,7 +79,7 @@ router.post('/file/applteQRcode', upload.single('applteQRcode'),(req, res, next)
  * @apiVersion 1.0.0
  */
 // passport.authenticate("jwt", { session: false }),
-router.post('/file/del', (req, res) => {
+router.delete('/file/del', (req, res) => {
     // 删除文件
     fs.unlink('upload/applte' + req.body.name,(err)=>{
         if(err) return res.status(0).json(err);
@@ -108,6 +102,7 @@ router.post('/file/del', (req, res) => {
  * @apiParam {String}  img 介绍图片集
  * @apiParam {String}  icon 图标
  * @apiParam {String}  qrcode 二维码
+ * @apiParam {Date}  createTime 创建时间
  * @apiSuccess {json} result
  * @apiVersion 1.0.0
  */
@@ -122,10 +117,14 @@ router.post("/add",  (req, res) => {
         imgURL: req.body.imgURL,
         iconURL: req.body.iconURL,
         qrcode: req.body.qrcode,
-        createTime: req.body.createTime
+        createTime:req.body.createTime
     })
     newData.save()
-        .then(data => res.json(data))
+        .then(data => res.json({
+            status:200,
+            code:0,
+            data:data
+        }))
         .catch(err => console.log(err))
 })
 
@@ -140,9 +139,13 @@ router.get("/listAll", (req, res) => {
     applte.find().populate('typeid')
         .then(data => {
             if (!data) {
-                return res.status(404).json("没有任何内容");
+                return res.json({code:404,status:200, message:"暂无数据"});
             }
-            res.json(data);
+            res.json({
+                status:200,
+                code:0,
+                data:data
+            });
         })
         .catch(err => res.status(403).json(err))
 })
@@ -152,19 +155,28 @@ router.get("/listAll", (req, res) => {
  * @apiGroup Applte
  * @apiParam {String} pageSize 每页显示条数
  * @apiParam {String} page 显示页
+ * @apiParam {String} name 名称
  * @apiSuccess {json} result
  * @apiVersion 1.0.0
  */
 
-router.post('/listByPage',(req,res) => { 
-    let pageSize = req.body.pageSize || 5 //设置默认值
-    let page = req.body.page || 1
-    applte.find().limit(Number(pageSize)).skip(Number((page-1)*pageSize))
+router.get('/listByPage',(req,res) => { 
+    let pageSize = req.query.pageSize || 5 //设置默认值
+    let page = req.query.page || 1
+    applte.find({name:{$regex:req.query.name}}).populate('typeid').limit(Number(pageSize)).skip(Number((page-1)*pageSize))
         .then((data) => {
             if (!data) {
-                return res.status(404).json("没有任何内容");
+                return res.json({"code":404,"status":200,"message":"暂无数据"});
             }
-            res.json({pageSize:pageSize,page:page,list:data});
+            res.json({
+                status:200,
+                code:0,
+                data:{
+                    pageSize:pageSize,
+                    page:page,
+                    list:data
+                }
+            });
         })
         .catch(err => res.status(403).json(err))
 }) 
@@ -182,9 +194,13 @@ router.get("/one", (req, res) => {
     applte.findOne({ _id: req.query.id })
         .then(data => {
             if (!data) {
-                return res.status(404).json("没有任何内容");
+                return res.json({"code":404,"status":200, "message":"暂无数据"});
             }
-            res.json(data);
+            res.json({
+                status:200,
+                code:0,
+                data:data
+                });
         })
         .catch(err => res.status(403).json(err))
 })
@@ -201,13 +217,13 @@ router.get("/list/ofName", (req, res) => {
     applte.find({name:{$regex:req.query.name}})
         .then(data => {
             if (!data) {
-                return res.json({
-                    "code":404,
-                    "status":404,
-                    "message":"暂无数据"
-                });
+                return res.json({"code":404,"status":200, "message":"暂无数据"});
             }
-            res.json(data);
+            res.json({
+                status:200,
+                code:0,
+                data:data
+                });
         })
         .catch(err => res.status(403).json(err))
 })
@@ -226,13 +242,13 @@ router.get("/list/ofTypeid", (req, res) => {
     applte.find({typeid:{$regex:req.query.typeid}})
         .then(doc => {
             if (!doc) {
-                return res.json({
-                    code:404,
-                    status:404,
-                    message:"暂无数据"
-                });
+                return res.json({"code":404,"status":200, "message":"暂无数据"});
             }
-            res.json(doc);
+            res.json({
+                status:200,
+                code:0,
+                data:doc
+                });
         })
         .catch(err => res.status(403).json(err))
 })
@@ -265,7 +281,7 @@ router.post("/edit",  (req, res) => {
     if (req.body.iconURL) newData.iconURL = req.body.iconURL;
     if (req.body.qrcode) newData.qrcode = req.body.qrcode;
     applte.updateOne(
-        { _id: req.body.id },
+        { _id: req.body._id },
         { $set: newData },
         {runValidators:false}
         // { new: true },
