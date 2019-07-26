@@ -81,8 +81,8 @@ router.post('/file/applteQRcode', upload.single('applteQRcode'),(req, res, next)
 // passport.authenticate("jwt", { session: false }),
 router.delete('/file/del', (req, res) => {
     // 删除文件
-    fs.unlink('upload/applte' + req.body.name,(err)=>{
-        if(err) return res.status(0).json(err);
+    fs.unlink('upload/applte/' + req.body.name,(err)=>{
+        if(err) return res.json(err);
         res.json({
             status:200,
             code:0,
