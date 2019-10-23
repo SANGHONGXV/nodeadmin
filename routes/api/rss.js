@@ -3,11 +3,11 @@
  * @Author: sanghx
  * @Date: 2019-10-19 11:34:25
  * @LastEditors: sanghx
- * @LastEditTime: 2019-10-21 16:06:16
+ * @LastEditTime: 2019-10-23 17:17:46
  */
 const express = require("express"),
-rsj = require('rsj'),
-router = express.Router();
+    rsj = require('rsj'),
+    router = express.Router();
 const rss = require('../../models/rss');
 // 测试
 router.get("/test", (req, res) => {
@@ -74,7 +74,7 @@ router.get('/listByPage', (req, res) => {
 /**
  * @api {GET} /api/rss/one 获取单个
  * @apiGroup rss
- * @apiParam {String}  _id 
+ * @apiParam {String}  _id
  * @apiSuccess {json} result
  * @apiVersion 1.0.0
  */
@@ -86,7 +86,7 @@ router.get("/one", (req, res) => {
             if (!data) {
                 return res.json({ "code": 404, "status": 200, "message": "暂无数据" });
             }
-            rsj.r2j(data.url,json =>　{
+            rsj.r2j(data.url, json => {
                 res.json({
                     status: 200,
                     code: 0,

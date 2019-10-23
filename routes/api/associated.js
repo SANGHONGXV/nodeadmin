@@ -3,7 +3,7 @@
  * @Author: sanghx
  * @Date: 2019-10-21 15:55:46
  * @LastEditors: sanghx
- * @LastEditTime: 2019-10-21 16:05:39
+ * @LastEditTime: 2019-10-23 16:03:57
  */
 const express = require("express"),
 router = express.Router(),
@@ -21,7 +21,7 @@ associated = require('../../models/associated');
 router.post("/add", (req, res) => {
   const newData = new associated({
       userId: req.body.userId,
-      associatedId: req.body.userId,
+      rssId: req.body.rssId,
       createTime: req.body.createTime
   })
   newData.save()
@@ -44,9 +44,9 @@ router.post("/add", (req, res) => {
  */
 
 router.get('/listByPage', (req, res) => {
-  let pageSize = req.query.pageSize || 5 //设置默认值
+  let pageSize = req.query.pageSize || 10 //设置默认值
   let page = req.query.page || 1
-  associated.find({ userId: req.query.userId })..limit(Number(pageSize)).skip(Number((page - 1) * pageSize))
+  associated.find({ userId: req.query.userId }).populate('rssId').limit(Number(pageSize)).skip(Number((page - 1) * pageSize))
       .then((data) => {
           if (!data) {
               return res.json({ "code": 404, "status": 200, "message": "暂无数据" });
