@@ -10,6 +10,8 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const passport = require("passport")
+const tools = require('./utils/tools.js')
+
 const app = express();
 
 const user = require("./routes/api/user");
@@ -18,6 +20,7 @@ const rss = require("./routes/api/rss");
 const db = require("./config/index").mongoUrl;
 
 // 使用body-parser中间件
+app.use('/', tools)
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
