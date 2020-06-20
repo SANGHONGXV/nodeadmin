@@ -1,4 +1,3 @@
-
 # 后端接口
 
 ## 1.部署
@@ -35,4 +34,5 @@ node+express+mongodb
 ## 3.实现
 
 - [x] 数据 增删改查
+- [x] jwt
 - [x] 配置docapi

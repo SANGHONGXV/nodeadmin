@@ -2,7 +2,7 @@
  * @Description: 
  * @Date: 2020-05-18 16:58:50
  * @LastEditors: sanghx
- * @LastEditTime: 2020-05-18 17:01:19
+ * @LastEditTime: 2020-06-20 20:53:07
  */ 
 class Tools {
   constructor(req, res) {
@@ -16,12 +16,12 @@ class Tools {
 	 * API接口调用返回JSON格式内容
 	 * @param {Number} code
 	 * @param {String} message
-	 * @param {Objext} data
+	 * @param {Objext} result
 	 */
-  setJson(result, message, status, code) {
+  setJson(result, message, code,status) {
     return this.res.json({
-      message: message || null,
       result: result || null,
+      message: message || null,
       code: code || 0,
       status: status || 200
     })

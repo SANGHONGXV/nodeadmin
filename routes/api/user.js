@@ -3,7 +3,7 @@
  * @Author: nardy.sanghx
  * @Date: 2019-08-01 21:48:34
  * @LastEditors: sanghx
- * @LastEditTime: 2019-10-21 14:12:53
+ * @LastEditTime: 2020-06-20 20:58:59
  */
 const express = require("express");
 const router = express.Router();
@@ -28,11 +28,7 @@ router.post("/register", (req, res) => {
     User.findOne({ email: req.body.email })
         .then((user) => {
             if (user) {
-                return res.json({
-                    status: 200,
-                    code: 1,
-                    message: '邮箱已经存在'
-                })
+                return res.tools.setJson('', '邮箱已经存在', 20005)
             } else {
                 const newUser = new User({
                     name: req.body.name,
@@ -47,11 +43,7 @@ router.post("/register", (req, res) => {
                         if (err) throw err;
                         newUser.password = hash;
                         newUser.save()
-                            .then(user => res.json({
-                                status: 200,
-                                code: 0,
-                                data: user
-                            }))
+                            .then(user => res.tools.setJson(user))
                             .catch(err => console.log(err))
                     });
                 });
@@ -100,21 +92,8 @@ router.post("/register", (req, res) => {
 // passport.authenticate("jwt", { session: false }),
 router.get("/listAll", (req, res) => {
     User.find()
-        .then(user => {
-            if (!user) {
-                return res.json({
-                    status: 200,
-                    code: 404,
-                    message: "不存在"
-                });
-            }
-            res.json({
-                status: 200,
-                code: 0,
-                data: user
-            });
-        })
-        .catch(err => res.status(403).json(err))
+        .then(user => res.tools.setJson(user))
+        .catch(err => res.tools.setJson('', err, 500, 500))
 })
 
 // $route POST api/user/login
@@ -137,11 +116,7 @@ router.post("/login", (req, res) => {
     User.findOne({ email })
         .then(user => {
             if (!user) {
-                return res.json({
-                    status: 200,
-                    code: 0,
-                    message: "不存在"
-                });
+                return res.tools.setJson('', '不存在', 20004)
             }
             //密码匹配
             bcrypt.compare(password, user.password)
@@ -155,19 +130,13 @@ router.post("/login", (req, res) => {
                         //   jwt.sign("规则","加密名字","过期时间","箭头函数")
                         jwt.sign(rule, keys.secretOrKey, { expiresIn: 3600 }, (err, token) => {
                             if (err) throw err;
-                            res.json({
-                                status: 200,
-                                code: 1,
-                                success: true,
+                            let data = {
                                 token: "Bearer " + token
-                            });
+                            }
+                            res.tools.setJson(data)
                         })
                     } else {
-                        return res.json({
-                            status: 200,
-                            code: 0,
-                            message: '密码错误'
-                        })
+                        return res.tools.setJson('', '密码错误', 20002)
                     }
                 })
         })
@@ -181,12 +150,13 @@ router.post("/login", (req, res) => {
 //     res.json({msg:"success"})
 // })
 router.get("/current", passport.authenticate("jwt", { session: false }), (req, res) => {
-    res.json({
+    const data = {
         id: req.user.id,
         name: req.user.name,
         email: req.user.email,
         identity: req.user.identity
-    })
+    }
+    res.tools.setJson(data)
 })
 
 
@@ -202,17 +172,8 @@ router.get("/current", passport.authenticate("jwt", { session: false }), (req, r
 // passport.authenticate("jwt", { session: false }),
 router.get("/one", (req, res) => {
     User.findOne({ _id: req.query.id }, { password: 0, email: 0 }).populate('focus.rssId')
-        .then(data => {
-            if (!data) {
-                return res.json({ "code": 404, "status": 200, "message": "暂无数据" });
-            }
-            res.json({
-                status: 200,
-                code: 0,
-                data: data
-            });
-        })
-        .catch(err => res.status(403).json(err))
+        .then(data => res.tools.setJson(data))
+        .catch(err => res.tools.setJson(data,err,500,500))
 })
 
 /**
@@ -232,13 +193,8 @@ router.post("/edit", (req, res) => {
         { runValidators: false }
         // { new: true },
         // { versionKey: false }
-    ).then(data => {
-        res.json({
-            status: 200,
-            message: "成功",
-            data: data
-        })
-    }).catch(err => res.status(403).json(err))
+    ).then(data => res.tools.setJson(data))
+    .catch(err => res.tools.setJson(data,err,500,500))
 })
 
 // $route delete api/user/del/:id
@@ -252,13 +208,8 @@ router.post("/edit", (req, res) => {
  * @apiVersion 1.0.0 
  */
 router.delete("/del", passport.authenticate("jwt", { session: false }), (req, res) => {
-    User.remove({ _id: req.body.id }).then(user => {
-        res.json({
-            status: 200,
-            code: 0,
-            message: "删除成功"
-        })
-    }).catch(err => res.status(404).json(err))
+    User.remove({ _id: req.body.id }).then(user => res.tools.setJson(user))
+    .catch(err => res.status(404).json(err))
 })
 
 module.exports = router;
