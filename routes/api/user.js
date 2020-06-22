@@ -22,7 +22,7 @@ router.get("/", passport.authenticate("jwt", { session: false }), (req, res) => 
 
 
 /**
- * @api {post} /api/user/insert 新增
+ * @api {post} /api/user 新增
  * @apiGroup user
  * @apiParam {String}  name 姓名
  * @apiParam {String}  email 邮箱
@@ -30,7 +30,7 @@ router.get("/", passport.authenticate("jwt", { session: false }), (req, res) => 
  * @apiSuccess {json} result
  * @apiVersion 1.0.0 
  */
-router.post("/insert", (req, res) => {
+router.post("/", (req, res) => {
 	// 查询数据库中是否拥有邮箱
 	User.findOne({ email: req.body.email })
 		.then((user) => {
@@ -122,27 +122,27 @@ router.get("/current", passport.authenticate("jwt", { session: false }), (req, r
 
 
 /**
- * @api {GET} /api/user/one 获取单个
+ * @api {GET} /api/user/:id 获取单个
  * @apiGroup user
  * @apiParam {String}  id 用户标识
  * @apiSuccess {json} result
  * @apiVersion 1.0.0
  */
-router.get("/one", passport.authenticate("jwt", { session: false }), (req, res) => {
-	User.findOne({ _id: req.query.id }, { password: 0, email: 0 }).populate('focus.rssId')
+router.get("/:id", passport.authenticate("jwt", { session: false }), (req, res) => {
+	User.findOne({ _id: req.params.id }, { password: 0, email: 0 }).populate('focus.rssId')
 		.then(data => res.tools.setJson(data))
 		.catch(err => res.tools.setJson(data, err, 500, 500))
 })
 
 /**
- * @api {put} /api/user/update 修改
+ * @api {put} /api/user 修改
  * @apiGroup user
- * @apiParam {String} id 标识
+ * @apiParam {String} _id 标识
  * @apiParam {String}  focus focus
  * @apiSuccess {json} result
  * @apiVersion 1.0.0
  */
-router.put("/update", (req, res) => {
+router.put("/", passport.authenticate("jwt", { session: false }), (req, res) => {
 	const newData = {}
 	if (req.body.focus) newData.focus = req.body.focus;
 	User.findByIdAndUpdate(
@@ -156,14 +156,15 @@ router.put("/update", (req, res) => {
 })
 
 /**
- * @api {delete} /api/user/delete 删除
+ * @api {delete} /api/user/:id 删除
  * @apiGroup user
  * @apiParam {String}  id 标识
  * @apiSuccess {json} result
  * @apiVersion 1.0.0 
  */
-router.delete("/delete", passport.authenticate("jwt", { session: false }), (req, res) => {
-	User.remove({ _id: req.body.id }).then(user => res.tools.setJson(user))
+// 
+router.delete("/:id", passport.authenticate("jwt", { session: false }), (req, res) => {
+	User.remove({ _id: req.params.id }).then(user => res.tools.setJson(user))
 		.catch(err => res.status(404).json(err))
 })
 
