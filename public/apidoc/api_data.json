@@ -1,7 +1,7 @@
 [
   {
     "type": "delete",
-    "url": "/api/user/del",
+    "url": "/api/user/delete",
     "title": "删除",
     "group": "user",
     "parameter": {
@@ -33,12 +33,12 @@
     "version": "1.0.0",
     "filename": "routes/api/user.js",
     "groupTitle": "user",
-    "name": "DeleteApiUserDel"
+    "name": "DeleteApiUserDelete"
   },
   {
     "type": "get",
-    "url": "/api/user/list",
-    "title": "",
+    "url": "/api/user",
+    "title": "获取全部",
     "group": "user",
     "success": {
       "fields": {
@@ -56,12 +56,12 @@
     "version": "1.0.0",
     "filename": "routes/api/user.js",
     "groupTitle": "user",
-    "name": "GetApiUserList"
+    "name": "GetApiUser"
   },
   {
     "type": "GET",
-    "url": "/api/user/one",
-    "title": "获取单个",
+    "url": "/api/user/current",
+    "title": "获取用户信息",
     "group": "user",
     "parameter": {
       "fields": {
@@ -92,12 +92,12 @@
     "version": "1.0.0",
     "filename": "routes/api/user.js",
     "groupTitle": "user",
-    "name": "GetApiUserOne"
+    "name": "GetApiUserCurrent"
   },
   {
-    "type": "post",
-    "url": "/api/user/edit",
-    "title": "修改",
+    "type": "GET",
+    "url": "/api/user/one",
+    "title": "获取单个",
     "group": "user",
     "parameter": {
       "fields": {
@@ -107,14 +107,7 @@
             "type": "String",
             "optional": false,
             "field": "id",
-            "description": "<p>标识</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "focus",
-            "description": "<p>focus</p>"
+            "description": "<p>用户标识</p>"
           }
         ]
       }
@@ -135,54 +128,11 @@
     "version": "1.0.0",
     "filename": "routes/api/user.js",
     "groupTitle": "user",
-    "name": "PostApiUserEdit"
+    "name": "GetApiUserOne"
   },
   {
     "type": "post",
-    "url": "/api/user/login",
-    "title": "登录",
-    "group": "user",
-    "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "email",
-            "description": "<p>邮箱</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "password",
-            "description": "<p>密码</p>"
-          }
-        ]
-      }
-    },
-    "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "type": "json",
-            "optional": false,
-            "field": "result",
-            "description": ""
-          }
-        ]
-      }
-    },
-    "version": "1.0.0",
-    "filename": "routes/api/user.js",
-    "groupTitle": "user",
-    "name": "PostApiUserLogin"
-  },
-  {
-    "type": "post",
-    "url": "/api/user/register",
+    "url": "/api/user/insert",
     "title": "新增",
     "group": "user",
     "parameter": {
@@ -228,6 +178,92 @@
     "version": "1.0.0",
     "filename": "routes/api/user.js",
     "groupTitle": "user",
-    "name": "PostApiUserRegister"
+    "name": "PostApiUserInsert"
+  },
+  {
+    "type": "post",
+    "url": "/api/user/login",
+    "title": "登录",
+    "group": "user",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "email",
+            "description": "<p>邮箱</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "password",
+            "description": "<p>密码</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "json",
+            "optional": false,
+            "field": "result",
+            "description": ""
+          }
+        ]
+      }
+    },
+    "version": "1.0.0",
+    "filename": "routes/api/user.js",
+    "groupTitle": "user",
+    "name": "PostApiUserLogin"
+  },
+  {
+    "type": "put",
+    "url": "/api/user/update",
+    "title": "修改",
+    "group": "user",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "id",
+            "description": "<p>标识</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "focus",
+            "description": "<p>focus</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "json",
+            "optional": false,
+            "field": "result",
+            "description": ""
+          }
+        ]
+      }
+    },
+    "version": "1.0.0",
+    "filename": "routes/api/user.js",
+    "groupTitle": "user",
+    "name": "PutApiUserUpdate"
   }
 ]

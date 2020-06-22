@@ -2,8 +2,10 @@
  * @Description: 
  * @Date: 2020-05-18 16:58:50
  * @LastEditors: sanghx
- * @LastEditTime: 2020-06-20 20:53:07
- */ 
+ * @LastEditTime: 2020-06-22 09:18:33
+ */
+"use strict";
+
 class Tools {
   constructor(req, res) {
     Object.assign(this, {
