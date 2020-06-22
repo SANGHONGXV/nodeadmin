@@ -1,10 +1,9 @@
 /*
- * @Description: -
- * @Author: nardy.sanghx
- * @Date: 2019-10-18 14:40:17
+ * @Description: 
+ * @Date: 2020-06-20 19:57:19
  * @LastEditors: sanghx
- * @LastEditTime: 2019-10-21 14:12:26
- */
+ * @LastEditTime: 2020-06-22 10:43:34
+ */ 
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 

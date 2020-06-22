@@ -1,10 +1,3 @@
-/*
- * @Description: 
- * @Author: nardy.sanghx
- * @Date: 2019-08-01 21:48:34
- * @LastEditors: sanghx
- * @LastEditTime: 2020-06-22 10:35:05
- */
 "use strict";
 
 const express = require("express");
@@ -14,7 +7,6 @@ var jwt = require('jsonwebtoken');
 const User = require("../../models/user");
 const keys = require("../../config/index");
 const passport = require("passport");
-
 
 /**
  * @api {get} /api/user 获取全部
