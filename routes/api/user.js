@@ -3,7 +3,7 @@
  * @Author: nardy.sanghx
  * @Date: 2019-08-01 21:48:34
  * @LastEditors: sanghx
- * @LastEditTime: 2020-06-22 09:33:06
+ * @LastEditTime: 2020-06-22 10:35:05
  */
 "use strict";
 
@@ -22,11 +22,10 @@ const passport = require("passport");
  * @apiSuccess {json} result
  * @apiVersion 1.0.0 
  */
-// passport.authenticate("jwt", { session: false }),
-router.get("/", (req, res) => {
-    User.find()
-        .then(user => res.tools.setJson(user))
-        .catch(err => res.tools.setJson('', err, 500, 500))
+router.get("/", passport.authenticate("jwt", { session: false }), (req, res) => {
+	User.find()
+		.then(user => res.tools.setJson(user))
+		.catch(err => res.tools.setJson('', err, 500, 500))
 })
 
 
@@ -39,33 +38,31 @@ router.get("/", (req, res) => {
  * @apiSuccess {json} result
  * @apiVersion 1.0.0 
  */
-// passport.authenticate("jwt", { session: false }),
 router.post("/insert", (req, res) => {
-    // 查询数据库中是否拥有邮箱
-    User.findOne({ email: req.body.email })
-        .then((user) => {
-            if (user) {
-                return res.tools.setJson('', '邮箱已经存在', 20005)
-            } else {
-                const newUser = new User({
-                    name: req.body.name,
-                    email: req.body.email,
-                    password: req.body.password,
-                    createTime: req.body.createTime
-                })
-                // password未进行加密
-                bcrypt.genSalt(10, (err, salt) => {
-                    bcrypt.hash(newUser.password, salt, (err, hash) => {
-                        // hash为加密后的密码
-                        if (err) throw err;
-                        newUser.password = hash;
-                        newUser.save()
-                            .then(user => res.tools.setJson(user))
-                            .catch(err => console.log(err))
-                    });
-                });
-            }
-        })
+	// 查询数据库中是否拥有邮箱
+	User.findOne({ email: req.body.email })
+		.then((user) => {
+			if (user) {
+				return res.tools.setJson('', '邮箱已经存在', 20005)
+			} else {
+				const newUser = new User({
+					name: req.body.name,
+					email: req.body.email,
+					password: req.body.password,
+					createTime: req.body.createTime
+				})
+				bcrypt.genSalt(10, (err, salt) => {
+					bcrypt.hash(newUser.password, salt, (err, hash) => {
+						// hash为加密后的密码
+						if (err) throw err;
+						newUser.password = hash;
+						newUser.save()
+							.then(user => res.tools.setJson(user))
+							.catch(err => console.log(err))
+					});
+				});
+			}
+		})
 })
 
 
@@ -80,36 +77,36 @@ router.post("/insert", (req, res) => {
  */
 
 router.post("/login", (req, res) => {
-    const email = req.body.email;
-    const password = req.body.password;
-    // 查询数据库
-    User.findOne({ email })
-        .then(user => {
-            if (!user) {
-                return res.tools.setJson('', '不存在', 20004)
-            }
-            //密码匹配
-            bcrypt.compare(password, user.password)
-                .then(isMatch => {
-                    if (isMatch) {
-                        const rule = {
-                            id: user.id,
-                            name: user.name,
-                            identity: user.identity
-                        };
-                        //   jwt.sign("规则","加密名字","过期时间","箭头函数")
-                        jwt.sign(rule, keys.secretOrKey, { expiresIn: 3600 }, (err, token) => {
-                            if (err) throw err;
-                            let data = {
-                                token: "Bearer " + token
-                            }
-                            res.tools.setJson(data)
-                        })
-                    } else {
-                        return res.tools.setJson('', '密码错误', 20002)
-                    }
-                })
-        })
+	const email = req.body.email;
+	const password = req.body.password;
+	// 查询数据库
+	User.findOne({ email })
+		.then(user => {
+			if (!user) {
+				return res.tools.setJson('', '不存在', 20004)
+			}
+			//密码匹配
+			bcrypt.compare(password, user.password)
+				.then(isMatch => {
+					if (isMatch) {
+						const rule = {
+							id: user.id,
+							name: user.name,
+							identity: user.identity
+						};
+						//   jwt.sign("规则","加密名字","过期时间","箭头函数")
+						jwt.sign(rule, keys.secretOrKey, { expiresIn: 3600 }, (err, token) => {
+							if (err) throw err;
+							let data = {
+								token: "Bearer " + token
+							}
+							res.tools.setJson(data)
+						})
+					} else {
+						return res.tools.setJson('', '密码错误', 20002)
+					}
+				})
+		})
 })
 
 /**
@@ -121,13 +118,13 @@ router.post("/login", (req, res) => {
  */
 
 router.get("/current", passport.authenticate("jwt", { session: false }), (req, res) => {
-    const data = {
-        id: req.user.id,
-        name: req.user.name,
-        email: req.user.email,
-        identity: req.user.identity
-    }
-    res.tools.setJson(data)
+	const data = {
+		id: req.user.id,
+		name: req.user.name,
+		email: req.user.email,
+		identity: req.user.identity
+	}
+	res.tools.setJson(data)
 })
 
 
@@ -139,10 +136,10 @@ router.get("/current", passport.authenticate("jwt", { session: false }), (req, r
  * @apiSuccess {json} result
  * @apiVersion 1.0.0
  */
-router.get("/one",passport.authenticate("jwt", { session: false }), (req, res) => {
-    User.findOne({ _id: req.query.id }, { password: 0, email: 0 }).populate('focus.rssId')
-        .then(data => res.tools.setJson(data))
-        .catch(err => res.tools.setJson(data,err,500,500))
+router.get("/one", passport.authenticate("jwt", { session: false }), (req, res) => {
+	User.findOne({ _id: req.query.id }, { password: 0, email: 0 }).populate('focus.rssId')
+		.then(data => res.tools.setJson(data))
+		.catch(err => res.tools.setJson(data, err, 500, 500))
 })
 
 /**
@@ -154,16 +151,16 @@ router.get("/one",passport.authenticate("jwt", { session: false }), (req, res) =
  * @apiVersion 1.0.0
  */
 router.put("/update", (req, res) => {
-    const newData = {}
-    if (req.body.focus) newData.focus = req.body.focus;
-    rss.findByIdAndUpdate(
-        { _id: req.body._id },
-        { $set: newData },
-        { runValidators: false }
-        // { new: true },
-        // { versionKey: false }
-    ).then(data => res.tools.setJson(data))
-    .catch(err => res.tools.setJson(data,err,500,500))
+	const newData = {}
+	if (req.body.focus) newData.focus = req.body.focus;
+	User.findByIdAndUpdate(
+		{ _id: req.body._id },
+		{ $set: newData },
+		{ runValidators: false }
+		// { new: true },
+		// { versionKey: false }
+	).then(data => res.tools.setJson(data))
+		.catch(err => res.tools.setJson(data, err, 500, 500))
 })
 
 /**
@@ -174,8 +171,50 @@ router.put("/update", (req, res) => {
  * @apiVersion 1.0.0 
  */
 router.delete("/delete", passport.authenticate("jwt", { session: false }), (req, res) => {
-    User.remove({ _id: req.body.id }).then(user => res.tools.setJson(user))
-    .catch(err => res.status(404).json(err))
+	User.remove({ _id: req.body.id }).then(user => res.tools.setJson(user))
+		.catch(err => res.status(404).json(err))
 })
+
+
+/**
+ * @api {put} /api/user/changePassword 修改密码
+ * @apiGroup user
+ * @apiParam {String}  _id 标识
+ * @apiParam {String}  oldPassword 旧密码
+ * @apiParam {String}  newPassword 新密码
+ * @apiSuccess {json} result
+ * @apiVersion 1.0.0 
+ */
+// passport.authenticate("jwt", { session: false }),
+router.put("/changePassword", (req, res) => {
+	const _id = req.body._id;
+	const oldPassword = req.body.oldPassword;
+	const newPassword = req.body.newPassword;
+	User.findOne({ _id }).then(user => {
+		if (!user) return res.tools.setJson('', '不存在', 20004)
+		bcrypt.compare(oldPassword, user.password).then(isMatch => {
+			if (isMatch) {
+				bcrypt.genSalt(10, (err, salt) => {
+					bcrypt.hash(newPassword, salt, (err, hash) => {
+						if (err) throw err;
+						const newData = {}
+						if (req.body.password) newData.password = req.body.password;
+						// hash为加密后的密码
+						newData.password = hash;
+						User.findByIdAndUpdate(
+							{ _id: _id },
+							{ $set: newData },
+							{ runValidators: false }
+						).then(data => res.tools.setJson(data))
+							.catch(err => res.tools.setJson(data, err, 500, 500))
+					});
+				});
+			} else {
+				return res.tools.setJson('', '旧密码错误', 20002)
+			}
+		})
+	})
+})
+
 
 module.exports = router;

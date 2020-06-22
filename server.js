@@ -3,15 +3,16 @@
  * @Author: sanghx
  * @Date: 2019-10-18 14:35:30
  * @LastEditors: sanghx
- * @LastEditTime: 2020-06-22 09:26:05
+ * @LastEditTime: 2020-06-22 09:49:46
  */
 
-const express = require("express");
-const mongoose = require("mongoose");
-const bodyParser = require("body-parser");
-const passport = require("passport")
-const path = require('path')
-const tools = require('./utils')
+const express = require("express"),
+      mongoose = require("mongoose"),
+      bodyParser = require("body-parser"),
+      passport = require("passport"),
+      path = require('path'),
+      tools = require('./utils');
+
 const app = express();
 
 const user = require("./routes/api/user");
