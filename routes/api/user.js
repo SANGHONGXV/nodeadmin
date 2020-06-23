@@ -165,7 +165,7 @@ router.put("/", passport.authenticate("jwt", { session: false }), (req, res) => 
 // 
 router.delete("/:id", passport.authenticate("jwt", { session: false }), (req, res) => {
 	User.remove({ _id: req.params.id }).then(user => res.tools.setJson(user))
-		.catch(err => res.status(404).json(err))
+		.catch(err => res.tools.setJson(data, err, 500, 500))
 })
 
 
