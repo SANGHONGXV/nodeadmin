@@ -14,6 +14,7 @@ const passport = require("passport");
  * @apiSuccess {json} result
  * @apiVersion 1.0.0 
  */
+
 router.get("/", passport.authenticate("jwt", { session: false }), (req, res) => {
 	User.find()
 		.then(user => res.tools.setJson(user))
@@ -30,6 +31,7 @@ router.get("/", passport.authenticate("jwt", { session: false }), (req, res) => 
  * @apiSuccess {json} result
  * @apiVersion 1.0.0 
  */
+
 router.post("/", (req, res) => {
 	// 查询数据库中是否拥有邮箱
 	User.findOne({ email: req.body.email })
@@ -128,6 +130,7 @@ router.get("/current", passport.authenticate("jwt", { session: false }), (req, r
  * @apiSuccess {json} result
  * @apiVersion 1.0.0
  */
+
 router.get("/:id", passport.authenticate("jwt", { session: false }), (req, res) => {
 	User.findOne({ _id: req.params.id }, { password: 0, email: 0 }).populate('focus.rssId')
 		.then(data => res.tools.setJson(data))
@@ -162,7 +165,7 @@ router.put("/", passport.authenticate("jwt", { session: false }), (req, res) => 
  * @apiSuccess {json} result
  * @apiVersion 1.0.0 
  */
-// 
+
 router.delete("/:id", passport.authenticate("jwt", { session: false }), (req, res) => {
 	User.remove({ _id: req.params.id }).then(user => res.tools.setJson(user))
 		.catch(err => res.tools.setJson(data, err, 500, 500))
@@ -178,8 +181,8 @@ router.delete("/:id", passport.authenticate("jwt", { session: false }), (req, re
  * @apiSuccess {json} result
  * @apiVersion 1.0.0 
  */
-// passport.authenticate("jwt", { session: false }),
-router.put("/changePassword", (req, res) => {
+
+router.put("/changePassword", passport.authenticate("jwt", { session: false }), (req, res) => {
 	const _id = req.body._id;
 	const oldPassword = req.body.oldPassword;
 	const newPassword = req.body.newPassword;
@@ -208,6 +211,5 @@ router.put("/changePassword", (req, res) => {
 		})
 	})
 })
-
 
 module.exports = router;
