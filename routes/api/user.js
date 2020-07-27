@@ -15,10 +15,11 @@ const passport = require("passport");
  * @apiVersion 1.0.0 
  */
 
-router.get("/", passport.authenticate("jwt", { session: false }), (req, res) => {
-	User.find()
-		.then(user => res.tools.setJson(user))
-		.catch(err => res.tools.setJson('', err, 500, 500))
+router.get("/", passport.authenticate("jwt", { session: false }), async (req, res) => {
+	const user = await User.find().then(user => res.tools.setJson(user))
+	// User.find()
+	// 	.then(user => res.tools.setJson(user))
+	// 	.catch(err => res.tools.setJson('', err, 500, 500))
 })
 
 
