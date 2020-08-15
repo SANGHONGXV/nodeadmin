@@ -1,6 +1,50 @@
 GET http://127.0.0.1:5000/api/user HTTP/1.1
 content-type: application/json
 ###
-POST https://example.com/comments HTTP/1.1
+POST http://127.0.0.1:5000/api/user HTTP/1.1
 content-type: application/json
 Authorization: 
+{
+  "name":"test111",
+  "email":"152@152.com",
+  "password":"a123456"
+}
+###
+POST http://127.0.0.1:5000/api/user/login HTTP/1.1
+content-type: application/json
+
+{
+  "email":"152@152.com",
+  "password":"a123456"
+}
+###
+GET http://127.0.0.1:5000/api/user/current HTTP/1.1
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmMzc0Y2UzZTRhMzlmMzViMDZmYmZmNiIsIm5hbWUiOiJ0ZXN0MTExIiwiaWF0IjoxNTk3NDYwMDc4LCJleHAiOjE1OTc0NjM2Nzh9.ZLHcpzgP0am7lyvhrd7wq4o1V8zrfC-4TV0r_o1J5Tg
+
+
+###
+GET http://127.0.0.1:5000/api/user/5f374ce3e4a39f35b06fbff6 HTTP/1.1
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmMzc0Y2UzZTRhMzlmMzViMDZmYmZmNiIsIm5hbWUiOiJ0ZXN0MTExIiwiaWF0IjoxNTk3NDYwMDc4LCJleHAiOjE1OTc0NjM2Nzh9.ZLHcpzgP0am7lyvhrd7wq4o1V8zrfC-4TV0r_o1J5Tg
+###
+PUT  http://127.0.0.1:5000/api/user HTTP/1.1
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmMzc0Y2UzZTRhMzlmMzViMDZmYmZmNiIsIm5hbWUiOiJ0ZXN0MTExIiwiaWF0IjoxNTk3NDYwMDc4LCJleHAiOjE1OTc0NjM2Nzh9.ZLHcpzgP0am7lyvhrd7wq4o1V8zrfC-4TV0r_o1J5Tg
+
+ {
+    "_id": "5f374ce3e4a39f35b06fbff6",
+    "name": "test2222",
+    "email": "152@152.com"
+  }
+
+###
+PUT  http://127.0.0.1:5000/api/user/changePassword HTTP/1.1
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmMzc0Y2UzZTRhMzlmMzViMDZmYmZmNiIsIm5hbWUiOiJ0ZXN0MTExIiwiaWF0IjoxNTk3NDYwMDc4LCJleHAiOjE1OTc0NjM2Nzh9.ZLHcpzgP0am7lyvhrd7wq4o1V8zrfC-4TV0r_o1J5Tg
+
+ {
+    "_id": "5f374ce3e4a39f35b06fbff6",
+    "oldPassword": "a123456",
+    "newPassword": "a12345"
+  }

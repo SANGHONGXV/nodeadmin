@@ -2,7 +2,7 @@
  * @Description: 
  * @Date: 2020-06-20 19:57:19
  * @LastEditors: sanghx
- * @LastEditTime: 2020-06-22 10:42:39
+ * @LastEditTime: 2020-08-15 10:37:46
  */ 
 const express = require("express"),
       mongoose = require("mongoose"),
@@ -34,7 +34,7 @@ require("./config/passport")(passport);
 // 配置apidoc
 app.use(express.static(path.join(__dirname, 'public')))
 app.get('/apidoc',function(req,res){
-    res.sendfile("./public/apidoc/index.html")
+    res.sendFile("./public/apidoc/index.html")
 })
 
 app.use('/', tools)
