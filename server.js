@@ -2,7 +2,7 @@
  * @Description: 
  * @Date: 2020-06-20 19:57:19
  * @LastEditors: sanghx
- * @LastEditTime: 2020-08-15 10:37:46
+ * @LastEditTime: 2020-12-14 20:43:27
  */ 
 const express = require("express"),
       mongoose = require("mongoose"),
@@ -13,8 +13,7 @@ const express = require("express"),
 
 const app = express();
 
-const user = require("./routes/api/user");
-
+const routes = require("./routes");
 
 // DB config
 const db = require("./config/index").mongoUrl;
@@ -38,8 +37,8 @@ app.get('/apidoc',function(req,res){
 })
 
 app.use('/', tools)
-// 使用routes
-app.use("/api/user", user);
+
+routes(app)
 
 const port = process.env.POST || 5000;
 app.listen(port, () => {
