@@ -2,24 +2,23 @@
  * @Description: 
  * @Date: 2020-06-20 19:57:19
  * @LastEditors: sanghx
- * @LastEditTime: 2020-12-14 20:43:27
- */ 
+ * @LastEditTime: 2020-12-14 21:04:30
+ */
 const express = require("express"),
-      mongoose = require("mongoose"),
-      bodyParser = require("body-parser"),
-      passport = require("passport"),
-      path = require('path'),
-      tools = require('./utils');
-
+    mongoose = require("mongoose"),
+    bodyParser = require("body-parser"),
+    passport = require("passport"),
+    path = require('path'),
+    routes = require("./routes"),
+    tools = require('./utils');
 const app = express();
 
-const routes = require("./routes");
 
 // DB config
 const db = require("./config/index").mongoUrl;
 mongoose.connect(db, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => console.log("Mongodb连接成功"))
-    .catch(err => console.log("Mongodb连接失败"+err));
+    .catch(err => console.log("Mongodb连接失败" + err));
 
 // 使用body-parser中间件
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -32,7 +31,7 @@ require("./config/passport")(passport);
 
 // 配置apidoc
 app.use(express.static(path.join(__dirname, 'public')))
-app.get('/apidoc',function(req,res){
+app.get('/apidoc', function (req, res) {
     res.sendFile("./public/apidoc/index.html")
 })
 
