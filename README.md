@@ -1,4 +1,4 @@
-# 后端接口
+# node+express+mongodb RESTful API 模板,用于快速集成开发RESTful前后端分离的服务端。
 
 ## 1.部署
 
