@@ -1,5 +1,7 @@
 # node+express+mongodb RESTful API 模板,用于快速集成开发RESTful前后端分离的服务端。
 
+# 后端接口
+
 ## 1.部署
 
 1.1 安装node环境
@@ -36,3 +38,28 @@ node+express+mongodb
 - [x] 数据 增删改查
 - [x] jwt
 - [x] 配置docapi
+
+```bash
+nodeadmin
+├── 1.http                          # 请求测试
+├── apidoc.json                     # apidoc 接口文档
+├── config                          # 链接配置
+│   ├── index.js                    # mongodb配置
+│   └── passport.js
+├── models
+│   └── user.js                     # 数据模型
+├── package-lock.json
+├── package.json
+├── README.md
+├── routes                          # API 请求事务
+│   ├── api
+│   │   └── user.js
+│   └── index.js
+├── server.js
+├── three.md
+├── upload
+└── utils
+    ├── index.js
+    └── tools.js
+
+```
